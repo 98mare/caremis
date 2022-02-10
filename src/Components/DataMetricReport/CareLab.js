@@ -29,6 +29,10 @@ const data = [
         name: 'Requestor Sales Summary',
         pathName: 'requestorsales'
     },
+    {
+        name: 'Void Bill',
+        pathName: 'voidbill'
+    },
 ]
 
 const CareLab = () => {
