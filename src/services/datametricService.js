@@ -1,4 +1,4 @@
-import { GetListOfUserForMetric, GetListOfTestByTypeForBulkUpdate, GetTestType, GetDatewiseRequestorTransactionDetails, GetRequestorList, GetReferedDoctorList, GetRequestorwiseTotalSalesSummaryByDate, GetDatewiseReferredDoctorTransactionDetails, GetDailySummaryTransactionUserWiseByDate, GetDailyTransactionByUserIdAndDate, GetCompanyDetials, GetDataMetricReportByReportTypeAndDateRange } from '../constants/url';
+import { GetListOfUserForMetric, GetListOfTestByTypeForBulkUpdate, GetTestType, GetDatewiseRequestorTransactionDetails, GetRequestorList, GetReferedDoctorList, GetRequestorwiseTotalSalesSummaryByDate, GetDatewiseReferredDoctorTransactionDetails, GetDailySummaryTransactionUserWiseByDate, GetDailyTransactionByUserIdAndDate, GetCompanyDetials, GetDataMetricReportByReportTypeAndDateRange, GetReturnedBillDetailsByDateRange } from '../constants/url';
 import { fetch, store } from '../utils/httpUtil';
 
 export const getTestTypeReport = (data, successCallback) => {
@@ -173,7 +173,25 @@ export const getDataMetricReportByReportTypeAndDateRange = (data, successCallbac
         try {
             const response = await fetch(`${GetDataMetricReportByReportTypeAndDateRange}?from=${data.fromdate}&to=${data.todate}&reportType=dashboard`);
             if (response?.status === 200) {
-                successCallback(response?.data);
+                successCallback(response?.data?.VoidBills);
+            } else {
+                successCallback([])
+            }
+        } catch (error) {
+
+        }
+    }
+}
+
+/**
+ * 
+ */
+export const getReturnedBillDetailsByDateRange = (data, successCallback) => {
+    return async dispatch => {
+        try {
+            const response = await fetch(`${GetReturnedBillDetailsByDateRange}?fromdate=${data.fromdate}&todate=${data.todate}`);
+            if (response?.status === 200) {
+                successCallback(response?.data?.VoidBills);
             } else {
                 successCallback([])
             }

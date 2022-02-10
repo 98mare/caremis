@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import Filter from '../Common/Filter'
 import PageHeader from '../Common/pageHeader'
-import { getDailySummaryReport } from "../../services/datametricService";
+import { getReturnedBillDetailsByDateRange } from "../../services/datametricService";
 import { Table, Tag } from "antd";
 import DataIsLoading from "../Common/IsLoading";
 
@@ -12,56 +12,23 @@ const VoidBill = () => {
   const [newTableData, setNewTableData] = useState([]);
   const [fromToDate, setfromToDate] = useState({});
   const [IsLoading, setIsLoading] = useState(false);
+  const [tableHead, setTableHead] = useState([]);
 
-  const tableHead = [
-    {
-      title: 'User Name',
-      dataIndex: 'UserName',
-      key: 'UserName',
-    },
-    {
-      title: 'Total Sales',
-      dataIndex: 'TotalSales',
-      key: 'TotalSales',
-    },
-    {
-      title: 'Collection',
-      dataIndex: 'Collection',
-      key: 'Collection',
-    },
-    {
-      title: 'Remaining',
-      dataIndex: 'Remaining',
-      key: 'Remaining',
-    },
-    {
-      title: 'Payment Type',
-      dataIndex: 'PaymentType',
-      key: 'PaymentType',
-      render: (text) => {
-        let retColor = ''
-        if (text !== null) {
-          if (text.toLowerCase() == 'cash')
-            retColor = 'green'
-          else if (text.toLowerCase() == 'card')
-            retColor = 'blue'
-          else if (text.toLowerCase() == 'due' || text.toLowerCase() == 'duecollection')
-            retColor = 'yellow'
-          else if (text.toLowerCase() == 'credit' || text.toLowerCase() == 'creditcollection')
-            retColor = 'red'
-        }
-        return <Tag color={retColor}>{text}</Tag>
-      }
-    },
-  ]
+  // const tableHead = [
+  //   {
+  //     title: 'PatientName',
+  //     dataIndex: 'PatientName',
+  //     key: 'PatientName',
+  //   }
+  // ]
 
   const getDataForReport = (data) => {
     setIsLoading(true);
-    dispatch(getDailySummaryReport(data, (val) => {
+    dispatch(getReturnedBillDetailsByDateRange(data, (val) => {
       settableData(val)
       setNewTableData(val)
-      setIsLoading(false);
     }))
+    setIsLoading(false);
   }
 
   const dataRet = (val) => {
@@ -72,6 +39,27 @@ const VoidBill = () => {
     }
     getDataForReport(data)
     setfromToDate(data);
+  }
+
+  useEffect(() => {
+    createTableHead()
+    return;
+  }, [tableData]);
+  
+  const createTableHead = () => {
+    if (tableData.length !== 0) {
+      let tableKeys = Object.keys(tableData[0]);
+      let data = []
+      tableKeys.forEach(ele => {
+        data.push({
+          title: ele,
+          dataIndex: ele,
+          key: ele,
+        })
+      })
+
+      setTableHead(data);
+    }
   }
 
   const handleSearch = (val) => {
@@ -89,9 +77,9 @@ const VoidBill = () => {
           pageTitle='Void Bill Report'
           csvLinkTitle='Export CSV'
           csvData={newTableData}
-          csvDataName='dailySummeryReport.csv'
+          csvDataName='voidBill.csv'
           printFileName
-          reportName='Daily Summary'
+          reportName='Void Bill'
           tableHead={tableHead}
           fromToDate={fromToDate}
         />
@@ -99,7 +87,6 @@ const VoidBill = () => {
           dateRange
           dateRet={dataRet}
           serchButton
-          getuserslist
           toCompareData={tableData}
           onSearch
           dataReturn={handleSearch}
@@ -108,13 +95,13 @@ const VoidBill = () => {
       </div>
       {
         IsLoading ? <DataIsLoading /> :
-        newTableData.length !== 0 ?
-      <div className="tableisRes">
-        <Table className='tableWidth'
-          columns={tableHead}
-          dataSource={newTableData}
-        />
-      </div>: ''
+          newTableData.length !== 0 ?
+            <div className="tableisRes">
+              <Table className='tableWidth'
+                columns={tableHead}
+                dataSource={newTableData}
+              />
+            </div> : ''
       }
     </>
   )

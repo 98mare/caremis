@@ -1,5 +1,5 @@
-// export const DEV_URL = 'http://192.168.100.34/CarelabInventory/';
-export const DEV_URL = 'https://lunivat.ddns.net/crystal/CarelabDataMetricServiceCrystal/';
+export const DEV_URL = 'http://lunivacare.ddns.net/CarelabDataMetricService_qc/';
+// export const DEV_URL = 'https://lunivat.ddns.net/crystal/CarelabDataMetricServiceCrystal/';
 // http://192.168.100.34/CarelabDataMetricServiceCrystal/
 export const BASE_URL = `${DEV_URL}Api/`; // see service for api or Api
 // for inventory lab only
@@ -174,6 +174,12 @@ export const GetListOfUserForMetric = 'GetListOfUserForMetric';
 export const GetCompanyDetials = 'GetCompanyDetials';
 
 export const GetDataMetricReportByReportTypeAndDateRange ='GetDataMetricReportByReportTypeAndDateRange';
+
+/**
+ * @desc: get returned bill details by date range
+ * @param: ?fromdate={fromdate}&todate={todate}
+ */
+export const GetReturnedBillDetailsByDateRange = 'GetReturnedBillDetailsByDateRange';
 //carelabdatametric services only dont mix up
 
 //POST
