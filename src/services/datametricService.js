@@ -1,4 +1,4 @@
-import { GetListOfUserForMetric, GetListOfTestByTypeForBulkUpdate, GetTestType, GetDatewiseRequestorTransactionDetails, GetRequestorList, GetReferedDoctorList, GetRequestorwiseTotalSalesSummaryByDate, GetDatewiseReferredDoctorTransactionDetails, GetDailySummaryTransactionUserWiseByDate, GetDailyTransactionByUserIdAndDate, GetCompanyDetials, GetDataMetricReportByReportTypeAndDateRange, GetReturnedBillDetailsByDateRange } from '../constants/url';
+import { GetListOfUserForMetric, GetListOfTestByTypeForBulkUpdate, GetTestType, GetDatewiseRequestorTransactionDetails, GetRequestorList, GetReferedDoctorList, GetRequestorwiseTotalSalesSummaryByDate, GetDatewiseReferredDoctorTransactionDetails, GetDailySummaryTransactionUserWiseByDate, GetDailyTransactionByUserIdAndDate, GetCompanyDetials, GetDataMetricReportByReportTypeAndDateRange, GetReturnedBillDetailsByDateRange, GetUserAndPaymentTypeWiseDetailsReport } from '../constants/url';
 import { fetch, store } from '../utils/httpUtil';
 
 export const getTestTypeReport = (data, successCallback) => {
@@ -192,6 +192,21 @@ export const getReturnedBillDetailsByDateRange = (data, successCallback) => {
             const response = await fetch(`${GetReturnedBillDetailsByDateRange}?fromdate=${data.fromdate}&todate=${data.todate}`);
             if (response?.status === 200) {
                 successCallback(response?.data?.VoidBills);
+            } else {
+                successCallback([])
+            }
+        } catch (error) {
+
+        }
+    }
+}
+
+export const getUserAndPayDetailsApi = (data, successCallback) => {
+    return async dispatch => {
+        try {
+            const response = await fetch(`${GetUserAndPaymentTypeWiseDetailsReport}?from=${data.fromdate}&to=${data.todate}&userId=${data.CreatedBy}&paymentType=${data.PaymentType}`);
+            if (response?.status === 200) {
+                successCallback(response?.data?.ReportDetails);
             } else {
                 successCallback([])
             }

@@ -337,3 +337,8 @@ export const InsertUpdateConsumptionTestLookUp = 'InsertUpdateConsumptionTestLoo
  }
  */
 export const InsertUpdateConsumptionGroup = 'InsertUpdateConsumptionGroup';
+/**
+ * @desc: get user and payment type wise details report
+ * @param: ?from={from}&to={to}&userId={userId}&paymentType={paymentType}
+ */
+export const GetUserAndPaymentTypeWiseDetailsReport = 'GetUserAndPaymentTypeWiseDetailsReport';

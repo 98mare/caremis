@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import Filter from '../Common/Filter'
 import PageHeader from '../Common/pageHeader'
 import { getDailySummaryReport } from "../../services/datametricService";
-import { Table, Tag } from "antd";
+import { Button, Table, Tag } from "antd";
 import DataIsLoading from "../Common/IsLoading";
+import DailySummaryModal from "./DailySummaryModal";
 
 const DailySummary = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,8 @@ const DailySummary = () => {
   const [newTableData, setNewTableData] = useState([]);
   const [fromToDate, setfromToDate] = useState({});
   const [IsLoading, setIsLoading] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [newData, setNewData] = useState({});
 
   const tableHead = [
     {
@@ -53,6 +56,14 @@ const DailySummary = () => {
         return <Tag color={retColor}>{text}</Tag>
       }
     },
+    {
+      title: 'Action',
+      dataIndex: '',
+      key: 'action',
+      render: (text, record) => {
+        return <Button onClick={() => handleModalClick(record)}>View Details</Button>
+      }
+    },
   ]
 
   const getDataForReport = (data) => {
@@ -82,6 +93,20 @@ const DailySummary = () => {
     }
   }
 
+  const handleCancel = () => {
+    setVisible(false)
+  }
+
+  const handleModalClick = (recordData) => {
+    let newData = {
+      ...fromToDate,
+      CreatedBy: recordData?.CreatedBy,
+      PaymentType: recordData?.PaymentType
+    }
+    setNewData(newData);
+    setVisible(true)
+  }
+
   return (
     <>
       <div className="maiTopContainer">
@@ -108,14 +133,15 @@ const DailySummary = () => {
       </div>
       {
         IsLoading ? <DataIsLoading /> :
-        newTableData.length !== 0 ?
-      <div className="tableisRes">
-        <Table className='tableWidth'
-          columns={tableHead}
-          dataSource={newTableData}
-        />
-      </div>: ''
+          newTableData.length !== 0 ?
+            <div className="tableisRes">
+              <Table className='tableWidth'
+                columns={tableHead}
+                dataSource={newTableData}
+              />
+            </div> : ''
       }
+      <DailySummaryModal visible={visible} handleCancel={handleCancel} fromToDate={newData} />
     </>
   )
 }
