@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux"
 import { getListofcompany } from '../../services/datametricService';
 import { newTableStyles } from './TableStyles';
 import { Link } from 'react-router-dom';
+import { image } from '../../assets/images/logo1.png'
 
 const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDataName, csvData, forGroup, forGroupButtonClick, forCon, forConButtonClick, printFileName, reportName, tableHead, fromToDate, removetwo, selctorr }) => {
   const dispatch = useDispatch();
@@ -22,8 +23,9 @@ const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDa
   //needs csvData, tableHead, fromTodate
   const printHandle = () => {
     if (csvData.length !== 0) {
+      // if(1 === 1){
       let newWindow = window.open()
-
+      console.log('new window')
       var adbs = require("ad-bs-converter");
       var nepaliFromDate = fromToDate.fromdate;
       var nepaliToDate = fromToDate.todate;
@@ -54,18 +56,66 @@ const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDa
 
       let refName = `
       <div class="gocenter">
-          <h2> ${companyDetail.CompanyName} </h2>
-          <p> ${companyDetail.COmpanyAddress} </p>
-          <p>Contact no:${companyDetail.COmpanyContactNo} </p>
-          <h2>${reportName} Report</h2>
+      <div class="printConatiner">
+        <div class="logo">
+          <img src="../../assets/images/logobig.png" alt="company logo" width="100" height="100">
+        </div>
+      <div class="topright">
+        <h2> Caompany name </h2>
+        <p>Address: Company address </p>
+        <p>Contact no: 90-9809809809 </p>
+        <p>E-mail: 90-9809809809 </p>
+        <p>Pan-no: 90-9809809809 </p>
       </div>
+    </div>
+    <h2>${reportName} Report</h2>
+    </div>
+    <div class="gocenter">
+    <div class="printConatiner">
+      <div class="border printleft">
+        <div class="">
+          <h2> requestor Caompany name </h2>
+          <p>Address: Requestor Company address </p>
+        </div>  
+        <div>
+          <strong>From</strong> ${neaplaiFromToDateString[0]} - <strong>To</strong> ${neaplaiFromToDateString[1]}
+        </div>
+      </div>
+      <div class="printright">
+        <div class="border smallBox topright">
+          <p> Client Code</p>
+          <p>908080980 </p>
+        </div>
+        <div class="border smallBox topright">
+          <p>Total O/S including</p>
+          <p>908080980 </p>
+        </div>
+        <div class="border smallBox topright">
+          <p>Invoice No.</p>
+          <p>908080980 </p>
+        </div>
+        <div class="border smallBox topright">
+          <p>Invoice Date</p>
+          <p>908080980 </p>
+        </div>
+        <div class="border smallBox topright">
+        <p>Invoice Amount</p>
+        <p>908080980 </p>
+      </div>
+      <div class="border smallBox topright">
+        <p>Page No.</p>
+        <p>908080980 </p>
+      </div>
+        
+      </div>
+    </div>
+    </div>
+    </div>
       <div class="headingContent">
       <div>
       ${selctorr !== undefined ? `${reportName} Name: ${csvData[0][selctorr]}` : ``}
       </div>
-      <div>
-      <strong>From</strong> ${neaplaiFromToDateString[0]} - <strong>To</strong> ${neaplaiFromToDateString[1]}
-      </div>
+      
       </div>
       `;
 
@@ -89,17 +139,50 @@ const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDa
 
       let allTable = `<table>${tableHeadHtml}${tableBody}</table>`
 
-      newWindow.document.body.innerHTML = newTableStyles + newStyle + refName + allTable
+      let footer = `
+        <div class="border" style="display: flex; padding: 10px 30px 10px 10px; justify-content: end;">
+          <div class="topright">
+            <div class="amount">
+              <h5>Total Amount</h5>
+              <p>Rs. 1000</p>
+            </div>
+            <div class="amount">
+              <h5>Discount</h5>
+              <p>Rs. 1000</p>
+            </div>
+            <div class="amount">
+              <h5>Net Amount</h5>
+              <p>Rs. 1000</p>
+            </div>
+            
+          </div>
+        </div>
+        <div class="border gocenter">
+          <p>Demand Draft/Cheque to be drawn in favour of, 'SRL Diagonostics (Nepal) Pvt.Ltc.'</p>
+          <div class="amount" style="padding: 20px; ">
+            <p class="" style="">Enter By:</p>
+            <p class="" style="border-top: 1px dotted">Enter By:</p>
+          </div>
+          <p >Copntent of hte Invoice will be considered if no errors are reported within 15 days of receipt of invoice. To assure proper credit your account please mention Client code & Invoice no. on your Remitetance.</p>
+        </div>
+        
+
+      `
+{/* <div class="border">
+        <p>In words</p>
+        </div> */}
+      newWindow.document.body.innerHTML = newTableStyles + newStyle + refName + allTable + footer
 
       setTimeout(function () {
-        newWindow.print();
-        newWindow.close();
+        // newWindow.print();
+        // newWindow.close();
       }, 300);
 
     } else {
-      message.info('select some data')
+      message.info('select some data');
     }
   }
+
 
   return (
     <PageHeaderContainer>
@@ -112,7 +195,7 @@ const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDa
         </Link>
         <Link className='coButton' to='/datametric'>
           <span>
-          Crystal Diagnostic Lab
+            Crystal Diagnostic Lab
           </span>
 
         </Link>
@@ -140,7 +223,7 @@ const PageHeader = ({ pageTitle, buttonTitle, buttonOnClick, csvLinkTitle, csvDa
           {
             printFileName &&
             <button
-              onClick={printHandle}
+              onClick={() => printHandle()}
               className="btn ant-btn btn-primary btn-primary--outline"
             >
               Print

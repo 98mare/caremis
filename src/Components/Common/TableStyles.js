@@ -42,6 +42,8 @@ tbody > tr > td {
 .gocenter {
     text-align: center;
 }
+
+}
 .gocenter h2, .gocenter p{
     margin: 0;
 }
@@ -49,5 +51,43 @@ tbody > tr > td {
     display: flex;
     justify-content: space-between;
   }
+
+  .printConatiner {
+    display: flex;
+    justify-content: space-between;
+  }
+  .border{
+    border: 1px solid dimgray;
+  }
+  .printleft, .printright, topright{
+      flex: 0.5
+  }
+  .topright p{
+    margin: 0;
+    padding: 0;
+  }
+  .printleft{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 10px 10px 20px;
+  }
+  .printright{
+    
+  display: flex;
+  flex-wrap: wrap;
+}
+  .smallBox {
+    width: 49%;
+    height: 60px;
+  }
+  .amount{
+    display: flex;
+    justify-content: space-between;
+}
+.amount h5{
+    margin: 0;
+}
 </style>
+
 `;
